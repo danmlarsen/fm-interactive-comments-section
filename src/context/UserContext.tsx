@@ -17,5 +17,10 @@ export function UserContextProvider({
 
 export function useUser() {
   const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("useUser should be used within <UserContextProvider>");
+  }
+
   return context;
 }

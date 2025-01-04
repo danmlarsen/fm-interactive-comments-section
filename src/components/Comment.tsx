@@ -2,7 +2,8 @@ import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import Avatar from "../ui/Avatar";
 import Card from "../ui/Card";
-import CommentAction from "./CommentActionButton";
+
+import CommentActions from "./CommentActions";
 
 export default function Comment({ data }: { data: TComment }) {
   const { content, createdAt, score, user, replies } = data;
@@ -32,18 +33,7 @@ export default function Comment({ data }: { data: TComment }) {
               </div>
               <div>{createdAt}</div>
             </div>
-            <div className="flex gap-6">
-              {user.username === currentUser.username && (
-                <>
-                  <CommentAction variant="Delete" />
-                  <CommentAction variant="Edit" />
-                </>
-              )}
-
-              {user.username !== currentUser.username && (
-                <CommentAction variant="Reply" />
-              )}
-            </div>
+            <CommentActions data={data} />
           </div>
           <div>{content}</div>
         </div>
@@ -56,7 +46,7 @@ export default function Comment({ data }: { data: TComment }) {
           </div>
           <div className="space-y-6">
             {replies.map((reply) => (
-              <Comment data={reply} />
+              <Comment key={reply.id} data={reply} />
             ))}
           </div>
         </div>

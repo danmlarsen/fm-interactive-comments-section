@@ -1,9 +1,12 @@
+import { useState } from "react";
 import Comment from "./Comment";
 import CommentReply from "./CommentReply";
 
-import { comments } from "../assets/data.json";
+import { comments as commentsJson } from "../assets/data.json";
 
 export default function Comments() {
+  const [comments] = useState(commentsJson);
+
   return (
     <div className="space-y-5">
       {comments.map((comment) => (

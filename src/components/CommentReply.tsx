@@ -6,7 +6,7 @@ import Card from "../ui/Card";
 import Textarea from "../ui/Textarea";
 import { useComments } from "./Comments";
 
-export default function CommentReply({ replyId }: { replyId?: number }) {
+export default function CommentReply({ replyId }: { replyId?: string }) {
   const { currentUser } = useUser();
 
   const { handleNewComment, handleNewReply } = useComments();

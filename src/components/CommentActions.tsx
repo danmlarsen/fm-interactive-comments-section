@@ -8,7 +8,7 @@ export default function CommentActions({
   onClickReply,
 }: {
   data: TComment;
-  onClickReply: (id: number) => void;
+  onClickReply: (id: string) => void;
 }) {
   const { id, user } = data;
   const { currentUser } = useUser();

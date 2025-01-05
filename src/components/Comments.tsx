@@ -1,19 +1,21 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 import Comment from "./Comment";
 import CommentReply from "./CommentReply";
 
 import { comments as commentsJson } from "../assets/data.json";
-import { convertToTimestamp, getCommentsLength } from "../utils/utils";
+import { convertToTimestamp } from "../utils/utils";
 
 import { useUser } from "../context/UserContext";
 
 type CommentsContextValue = {
-  handleNewComment: (comment: string, replyId?: number) => void;
-  handleNewReply: (replyText: string, replyId: number) => void;
-  handleEditComment: (id: number) => void;
-  handleDeleteComment: (id: number) => void;
-  handleScore: (id: number, value: number) => void;
+  handleNewComment: (comment: string, replyId?: string) => void;
+  handleNewReply: (replyText: string, replyId: string) => void;
+  handleEditComment: (id: string) => void;
+  handleDeleteComment: (id: string) => void;
+  handleScore: (id: string, value: number) => void;
 };
 
 const CommentsContext = createContext<CommentsContextValue | null>(null);
@@ -41,10 +43,15 @@ export default function Comments() {
   // Convert relative createdAt strings to date strings
   const commentsData = commentsJson.map((comment) => {
     const replies = comment.replies.map((reply) => {
-      return { ...reply, createdAt: convertToTimestamp(reply.createdAt) };
+      return {
+        ...reply,
+        id: uuidv4(),
+        createdAt: convertToTimestamp(reply.createdAt),
+      };
     });
     return {
       ...comment,
+      id: uuidv4(),
       createdAt: convertToTimestamp(comment.createdAt),
       replies,
     };
@@ -63,7 +70,7 @@ export default function Comments() {
           setComments((prevComments) => [
             ...prevComments,
             {
-              id: getCommentsLength(prevComments) + 1,
+              id: uuidv4(),
               content: commentText,
               createdAt: new Date().toISOString(),
               score: 0,
@@ -81,7 +88,7 @@ export default function Comments() {
                 replies: [
                   ...comment.replies,
                   {
-                    id: getCommentsLength(prevComments) + 1,
+                    id: uuidv4(),
                     content: replyText,
                     createdAt: new Date().toISOString(),
                     score: 0,

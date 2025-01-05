@@ -5,8 +5,8 @@ import { currentUser } from "../assets/data.json";
 
 type UserContextValue = {
   currentUser: typeof currentUser;
-  votes: number[];
-  addVote: (id: number) => void;
+  votes: string[];
+  addVote: (id: string) => void;
 };
 
 const UserContext = createContext<UserContextValue>({} as UserContextValue);
@@ -16,7 +16,7 @@ export function UserContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [votes, setVotes] = useState<number[]>([]);
+  const [votes, setVotes] = useState<string[]>([]);
 
   return (
     <UserContext.Provider

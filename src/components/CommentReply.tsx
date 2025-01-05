@@ -9,7 +9,7 @@ import { useComments } from "./Comments";
 export default function CommentReply({ replyId }: { replyId?: number }) {
   const { currentUser } = useUser();
 
-  const { handleNewComment } = useComments();
+  const { handleNewComment, handleNewReply } = useComments();
 
   const [commentText, setCommentText] = useState("");
 
@@ -27,7 +27,7 @@ export default function CommentReply({ replyId }: { replyId?: number }) {
         <div>
           <Button
             onClick={() => {
-              if (replyId) handleNewComment(commentText, replyId);
+              if (replyId) handleNewReply(commentText, replyId);
               else handleNewComment(commentText);
             }}
           >

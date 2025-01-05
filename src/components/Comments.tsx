@@ -10,6 +10,7 @@ import { useUser } from "../context/UserContext";
 
 type CommentsContextValue = {
   handleNewComment: (comment: string, replyId?: number) => void;
+  handleNewReply: (replyText: string, replyId: number) => void;
   handleEditComment: (id: number) => void;
   handleDeleteComment: (id: number) => void;
   handleScore: (id: number, value: number) => void;
@@ -26,6 +27,15 @@ export function useComments() {
 
   return commentsContext;
 }
+
+// type CommentsAction = {type: 'ADD_COMMENT', payload: string}
+
+// function commentsReducer(state: TComment[], action: CommentsAction) {
+//   switch (action.type) {
+//     case 'ADD_COMMENT': return state;
+//     default: return state;
+//   }
+// }
 
 export default function Comments() {
   // Convert relative createdAt strings to date strings
@@ -44,43 +54,44 @@ export default function Comments() {
 
   const [comments, setComments] = useState(commentsData);
 
+  //const [state, dispatch] = useReducer(commentsReducer, commentsData);
+
   return (
     <CommentsContext.Provider
       value={{
-        handleNewComment(commentText, replyId) {
-          if (replyId) {
-            setComments((prevComments) =>
-              prevComments.map((comment) => {
-                if (comment.id !== replyId) return comment;
-                return {
-                  ...comment,
-                  replies: [
-                    ...comment.replies,
-                    {
-                      id: getCommentsLength(prevComments) + 1,
-                      content: commentText,
-                      createdAt: new Date().toISOString(),
-                      score: 0,
-                      user: currentUser,
-                      replyingTo: comment.user.username,
-                    },
-                  ],
-                };
-              }),
-            );
-          } else {
-            setComments((prevComments) => [
-              ...prevComments,
-              {
-                id: getCommentsLength(prevComments) + 1,
-                content: commentText,
-                createdAt: new Date().toISOString(),
-                score: 0,
-                user: currentUser,
-                replies: [],
-              },
-            ]);
-          }
+        handleNewComment(commentText) {
+          setComments((prevComments) => [
+            ...prevComments,
+            {
+              id: getCommentsLength(prevComments) + 1,
+              content: commentText,
+              createdAt: new Date().toISOString(),
+              score: 0,
+              user: currentUser,
+              replies: [],
+            },
+          ]);
+        },
+        handleNewReply(replyText, replyId) {
+          setComments((prevComments) =>
+            prevComments.map((comment) => {
+              if (comment.id !== replyId) return comment;
+              return {
+                ...comment,
+                replies: [
+                  ...comment.replies,
+                  {
+                    id: getCommentsLength(prevComments) + 1,
+                    content: replyText,
+                    createdAt: new Date().toISOString(),
+                    score: 0,
+                    user: currentUser,
+                    replyingTo: comment.user.username,
+                  },
+                ],
+              };
+            }),
+          );
         },
         handleEditComment() {},
         handleDeleteComment(id) {

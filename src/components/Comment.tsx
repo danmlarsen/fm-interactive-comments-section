@@ -9,21 +9,23 @@ import CommentActions from "./CommentActions";
 import CommentRepliesList from "./CommentRepliesList";
 import CommentReply from "./CommentReply";
 import CommentScore from "./CommentScore";
+import { useComments } from "./Comments";
 
 export default function Comment({ data }: { data: TComment }) {
-  const { content, createdAt, score, user, replies } = data;
+  const { id, content, createdAt, user, replies } = data;
 
   const [replyIsOpen, setReplyIsOpen] = useState(false);
 
-  const currentUser = useUser();
+  const { currentUser } = useUser();
+  const { handleScore } = useComments();
 
   return (
     <div className="space-y-5">
       <Card className="grid grid-cols-[auto_1fr] gap-6">
         <CommentScore
-          score={score}
-          onClickMinus={() => {}}
-          onClickPlus={() => {}}
+          data={data}
+          onClickMinus={() => handleScore(id, -1)}
+          onClickPlus={() => handleScore(id, 1)}
         />
         <div className="space-y-4">
           <div className="flex justify-between">
@@ -48,7 +50,7 @@ export default function Comment({ data }: { data: TComment }) {
         </div>
       </Card>
 
-      {replyIsOpen && <CommentReply />}
+      {replyIsOpen && <CommentReply replyId={id} />}
 
       {replies && replies.length > 0 && (
         <CommentRepliesList replies={replies} />

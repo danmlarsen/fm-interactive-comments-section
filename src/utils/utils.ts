@@ -1,3 +1,5 @@
+import { TComment } from "../types/Comment";
+
 export function convertToTimestamp(relativeTime: string) {
   const now = new Date();
   const [amount, unit] = relativeTime.split(" ");
@@ -30,4 +32,11 @@ export function convertToTimestamp(relativeTime: string) {
   }
 
   return now.toISOString();
+}
+
+export function getCommentsLength(commentsArray: TComment[]) {
+  return commentsArray.reduce((acc, val) => {
+    if (val.replies) return acc + val.replies.length + 1;
+    else return acc + 1;
+  }, 0);
 }

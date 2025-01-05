@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import Avatar from "../ui/Avatar";
@@ -36,7 +37,7 @@ export default function Comment({ data }: { data: TComment }) {
                   </span>
                 )}
               </div>
-              <div>{createdAt}</div>
+              <div>{formatDistanceToNow(createdAt, { addSuffix: true })}</div>
             </div>
             <CommentActions
               data={data}

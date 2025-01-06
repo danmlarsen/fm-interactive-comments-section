@@ -1,4 +1,5 @@
 import Comments from "./components/Comments";
+import CommentsContextProvider from "./context/CommentContext";
 import { UserContextProvider } from "./context/UserContext";
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
     <UserContextProvider>
       <main className="grid min-h-screen place-items-center">
         <div className="max-w-[730px]">
-          <Comments />
+          <CommentsContextProvider>
+            <Comments />
+          </CommentsContextProvider>
         </div>
       </main>
     </UserContextProvider>

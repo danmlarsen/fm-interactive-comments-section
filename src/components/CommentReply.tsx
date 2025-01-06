@@ -4,7 +4,7 @@ import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import Textarea from "../ui/Textarea";
-import { useComments } from "./Comments";
+import { useComments } from "../context/CommentContext";
 
 export default function CommentReply({ replyId }: { replyId?: string }) {
   const { currentUser } = useUser();

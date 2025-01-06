@@ -1,7 +1,7 @@
+import { useComments } from "../context/CommentContext";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import CommentActionButton from "./CommentActionButton";
-import { useComments } from "./Comments";
 
 export default function CommentActions({
   data,

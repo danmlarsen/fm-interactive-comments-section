@@ -9,7 +9,7 @@ import CommentActions from "./CommentActions";
 import CommentRepliesList from "./CommentRepliesList";
 import CommentReply from "./CommentReply";
 import CommentScore from "./CommentScore";
-import { useComments } from "./Comments";
+import { useComments } from "../context/CommentContext";
 
 export default function Comment({ data }: { data: TComment }) {
   const { id, content, createdAt, user, replies } = data;

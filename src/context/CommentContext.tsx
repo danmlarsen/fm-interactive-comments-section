@@ -27,15 +27,6 @@ export function useComments() {
   return commentsContext;
 }
 
-// type CommentsAction = {type: 'ADD_COMMENT', payload: string}
-
-// function commentsReducer(state: TComment[], action: CommentsAction) {
-//   switch (action.type) {
-//     case 'ADD_COMMENT': return state;
-//     default: return state;
-//   }
-// }
-
 export default function CommentsContextProvider({
   children,
 }: {
@@ -62,8 +53,6 @@ export default function CommentsContextProvider({
 
   const [comments, setComments] = useState(commentsData);
 
-  //const [state, dispatch] = useReducer(commentsReducer, commentsData);
-
   return (
     <CommentsContext.Provider
       value={{
@@ -82,9 +71,25 @@ export default function CommentsContextProvider({
           ]);
         },
         handleNewReply(replyText, replyId) {
+          let parentId: string;
+          let replyTo: string;
+          if (comments.find((comment) => comment.id === replyId)) {
+            const comment = comments.find((comment) => comment.id === replyId)!;
+            parentId = comment.id;
+            replyTo = comment.user.username;
+          } else {
+            const commentIndex = comments.findIndex((comment) =>
+              comment.replies.find((reply) => reply.id === replyId),
+            )!;
+            parentId = comments[commentIndex].id;
+            replyTo = comments[commentIndex].replies.find(
+              (reply) => reply.id === replyId,
+            )!.user.username;
+          }
+
           setComments((prevComments) =>
             prevComments.map((comment) => {
-              if (comment.id !== replyId) return comment;
+              if (comment.id !== parentId) return comment;
               return {
                 ...comment,
                 replies: [
@@ -95,7 +100,7 @@ export default function CommentsContextProvider({
                     createdAt: new Date().toISOString(),
                     score: 0,
                     user: currentUser,
-                    replyingTo: comment.user.username,
+                    replyingTo: replyTo,
                   },
                 ],
               };

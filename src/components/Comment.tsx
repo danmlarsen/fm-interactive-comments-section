@@ -11,10 +11,13 @@ import CommentReply from "./CommentReply";
 import CommentScore from "./CommentScore";
 import { useComments } from "../context/CommentContext";
 
+import CommentEdit from "./CommentEdit";
+
 export default function Comment({ data }: { data: TComment }) {
   const { id, content, createdAt, user, replies } = data;
 
   const [replyIsOpen, setReplyIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const { currentUser } = useUser();
   const { handleScore } = useComments();
@@ -44,13 +47,26 @@ export default function Comment({ data }: { data: TComment }) {
             <CommentActions
               data={data}
               onClickReply={() => setReplyIsOpen((prev) => !prev)}
+              onClickEdit={() => setIsEditing((prev) => !prev)}
             />
           </div>
-          <div>{content}</div>
+          {!isEditing && <div>{content}</div>}
+          {isEditing && (
+            <CommentEdit
+              comment={content}
+              commentId={id}
+              onEdit={() => setIsEditing(false)}
+            />
+          )}
         </div>
       </Card>
 
-      {replyIsOpen && <CommentReply replyId={id} />}
+      {replyIsOpen && (
+        <CommentReply
+          replyId={id}
+          onReplySuccess={() => setReplyIsOpen(false)}
+        />
+      )}
 
       {replies && replies.length > 0 && (
         <CommentRepliesList replies={replies} />

@@ -10,7 +10,7 @@ type CommentsContextValue = {
   comments: TComment[];
   handleNewComment: (comment: string, replyId?: string) => void;
   handleNewReply: (replyText: string, replyId: string) => void;
-  handleEditComment: (id: string) => void;
+  handleEditComment: (id: string, newContent: string) => void;
   handleDeleteComment: (id: string) => void;
   handleScore: (id: string, value: number) => void;
 };
@@ -107,7 +107,21 @@ export default function CommentsContextProvider({
             }),
           );
         },
-        handleEditComment() {},
+        handleEditComment(id, newContent) {
+          setComments((prevComments) =>
+            prevComments.map((comment) => {
+              if (comment.id === id) return { ...comment, content: newContent };
+              else {
+                return {
+                  ...comment,
+                  replies: comment.replies.map((reply) =>
+                    reply.id === id ? { ...reply, content: newContent } : reply,
+                  ),
+                };
+              }
+            }),
+          );
+        },
         handleDeleteComment(id) {
           setComments((prevComments) => {
             return prevComments

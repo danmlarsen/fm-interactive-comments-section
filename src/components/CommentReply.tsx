@@ -6,7 +6,13 @@ import Card from "../ui/Card";
 import Textarea from "../ui/Textarea";
 import { useComments } from "../context/CommentContext";
 
-export default function CommentReply({ replyId }: { replyId?: string }) {
+export default function CommentReply({
+  replyId,
+  onReplySuccess,
+}: {
+  replyId?: string;
+  onReplySuccess?: () => void;
+}) {
   const { currentUser } = useUser();
 
   const { handleNewComment, handleNewReply } = useComments();
@@ -27,8 +33,10 @@ export default function CommentReply({ replyId }: { replyId?: string }) {
         <div>
           <Button
             onClick={() => {
-              if (replyId) handleNewReply(commentText, replyId);
-              else handleNewComment(commentText);
+              if (replyId) {
+                handleNewReply(commentText, replyId);
+                onReplySuccess?.();
+              } else handleNewComment(commentText);
             }}
           >
             Reply

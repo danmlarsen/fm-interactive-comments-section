@@ -6,9 +6,11 @@ import CommentActionButton from "./CommentActionButton";
 export default function CommentActions({
   data,
   onClickReply,
+  onClickEdit,
 }: {
   data: TComment;
   onClickReply: (id: string) => void;
+  onClickEdit: () => void;
 }) {
   const { id, user } = data;
   const { currentUser } = useUser();
@@ -22,7 +24,7 @@ export default function CommentActions({
             variant="Delete"
             onClick={() => handleDeleteComment(id)}
           />
-          <CommentActionButton variant="Edit" onClick={() => {}} />
+          <CommentActionButton variant="Edit" onClick={onClickEdit} />
         </>
       )}
 

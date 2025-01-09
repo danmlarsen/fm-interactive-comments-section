@@ -7,7 +7,10 @@ export default function Card({
   ...props
 }: ComponentProps<"div">) {
   return (
-    <div className={twMerge("rounded-lg bg-white p-6", className)} {...props}>
+    <div
+      className={twMerge("rounded-lg bg-white p-4 md:p-6", className)}
+      {...props}
+    >
       {children}
     </div>
   );

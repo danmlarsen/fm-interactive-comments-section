@@ -16,7 +16,7 @@ export default function CommentScore({
   const { votes } = useUser();
 
   return (
-    <div className="text-blue font flex min-w-10 flex-col gap-4 rounded-xl bg-gray-100 py-3 text-center font-medium">
+    <div className="text-blue font flex min-w-[100px] items-center justify-between gap-4 rounded-[10px] bg-gray-100 text-center font-medium md:min-w-10 md:flex-col">
       <CommentScoreButton onClick={onClickPlus} disabled={votes.includes(id)}>
         <IconPlus />
       </CommentScoreButton>
@@ -34,7 +34,7 @@ function CommentScoreButton({
 }: React.ComponentProps<"button">) {
   return (
     <button
-      className="hover:text-blue flex h-4 items-center justify-center text-gray-300 transition duration-300 hover:disabled:text-gray-300"
+      className="hover:text-blue flex h-4 items-center justify-center px-2 py-4 text-gray-300 transition duration-300 hover:disabled:text-gray-300"
       {...props}
     >
       {children}

@@ -5,8 +5,8 @@ import { UserContextProvider } from "./context/UserContext";
 function App() {
   return (
     <UserContextProvider>
-      <main className="grid min-h-screen place-items-center">
-        <div className="max-w-[730px]">
+      <main className="grid min-h-screen place-items-center px-4 py-8">
+        <div className="max-w-[45.625rem]">
           <CommentsContextProvider>
             <Comments />
           </CommentsContextProvider>

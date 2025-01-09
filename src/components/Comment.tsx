@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import Avatar from "../ui/Avatar";
@@ -24,12 +24,15 @@ export default function Comment({ data }: { data: TComment }) {
 
   return (
     <div className="space-y-5">
-      <Card className="grid grid-cols-[auto_1fr] gap-6">
-        <CommentScore
-          data={data}
-          onClickMinus={() => handleScore(id, -1)}
-          onClickPlus={() => handleScore(id, 1)}
-        />
+      <Card className="grid gap-6 md:grid-cols-[auto_1fr]">
+        <div className="hidden md:block">
+          <CommentScore
+            data={data}
+            onClickMinus={() => handleScore(id, -1)}
+            onClickPlus={() => handleScore(id, 1)}
+          />
+        </div>
+
         <div className="space-y-4">
           <div className="flex justify-between">
             <div className="flex items-center gap-4">
@@ -37,18 +40,22 @@ export default function Comment({ data }: { data: TComment }) {
               <div className="flex items-center gap-2 font-medium text-gray-800">
                 <span>{user.username}</span>
                 {user.username === currentUser.username && (
-                  <span className="bg-blue rounded-sm p-1 px-2 text-white">
+                  <span className="bg-blue rounded-sm p-1 px-2 text-xs text-white">
                     you
                   </span>
                 )}
               </div>
-              <div>{formatDistanceToNow(createdAt, { addSuffix: true })}</div>
+              <div>
+                {formatDistanceToNowStrict(createdAt, { addSuffix: true })}
+              </div>
             </div>
-            <CommentActions
-              data={data}
-              onClickReply={() => setReplyIsOpen((prev) => !prev)}
-              onClickEdit={() => setIsEditing((prev) => !prev)}
-            />
+            <div className="hidden md:block">
+              <CommentActions
+                data={data}
+                onClickReply={() => setReplyIsOpen((prev) => !prev)}
+                onClickEdit={() => setIsEditing((prev) => !prev)}
+              />
+            </div>
           </div>
           {!isEditing && <div>{content}</div>}
           {isEditing && (
@@ -58,6 +65,19 @@ export default function Comment({ data }: { data: TComment }) {
               onEdit={() => setIsEditing(false)}
             />
           )}
+
+          <div className="flex justify-between md:hidden">
+            <CommentScore
+              data={data}
+              onClickMinus={() => handleScore(id, -1)}
+              onClickPlus={() => handleScore(id, 1)}
+            />
+            <CommentActions
+              data={data}
+              onClickReply={() => setReplyIsOpen((prev) => !prev)}
+              onClickEdit={() => setIsEditing((prev) => !prev)}
+            />
+          </div>
         </div>
       </Card>
 

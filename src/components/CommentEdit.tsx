@@ -17,19 +17,21 @@ export default function CommentEdit({
   const [contentEdit, setContentEdit] = useState(comment);
 
   return (
-    <div>
+    <div className="space-y-4">
       <Textarea
         value={contentEdit}
         onChange={(e) => setContentEdit(e.target.value)}
       />
-      <Button
-        onClick={() => {
-          handleEditComment(commentId, contentEdit);
-          onEdit();
-        }}
-      >
-        Update
-      </Button>
+      <div className="flex justify-end">
+        <Button
+          onClick={() => {
+            handleEditComment(commentId, contentEdit);
+            onEdit();
+          }}
+        >
+          Update
+        </Button>
+      </div>
     </div>
   );
 }

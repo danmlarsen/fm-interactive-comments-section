@@ -7,8 +7,8 @@ export default function CommentRepliesList({
   replies: TComment[];
 }) {
   return (
-    <div className="grid grid-cols-[88px_auto]">
-      <div>
+    <div className="grid grid-cols-[auto_1fr]">
+      <div className="pr-4 sm:px-[43px]">
         <div className="mx-auto h-full w-[2px] bg-gray-200" />
       </div>
       <div className="space-y-6">

@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
+import useLocalStorageState from "use-local-storage-state";
 
 import { comments as commentsJson } from "../assets/data.json";
 import { convertToTimestamp } from "../utils/utils";
@@ -51,7 +52,10 @@ export default function CommentsContextProvider({
 
   const { currentUser, votes, addVote } = useUser();
 
-  const [comments, setComments] = useState(commentsData);
+  // const [comments, setComments] = useState(commentsData);
+  const [comments, setComments] = useLocalStorageState("comments", {
+    defaultValue: commentsData,
+  });
 
   return (
     <CommentsContext.Provider

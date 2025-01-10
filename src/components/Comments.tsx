@@ -8,9 +8,11 @@ export default function Comments() {
 
   return (
     <div className="space-y-5">
-      {comments.map((comment) => (
-        <Comment key={comment.id} data={comment} />
-      ))}
+      {comments
+        .sort((a, b) => b.score - a.score)
+        .map((comment) => (
+          <Comment key={comment.id} data={comment} />
+        ))}
       <CommentReply />
     </div>
   );

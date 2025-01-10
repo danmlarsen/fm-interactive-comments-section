@@ -12,9 +12,14 @@ export default function CommentRepliesList({
         <div className="mx-auto h-full w-[2px] bg-gray-200" />
       </div>
       <div className="space-y-6">
-        {replies.map((reply) => (
-          <Comment key={reply.id} data={reply} />
-        ))}
+        {replies
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+          )
+          .map((reply) => (
+            <Comment key={reply.id} data={reply} />
+          ))}
       </div>
     </div>
   );

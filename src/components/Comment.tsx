@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
@@ -9,28 +9,22 @@ import CommentActions from "./CommentActions";
 import CommentRepliesList from "./CommentRepliesList";
 import CommentReply from "./CommentReply";
 import CommentScore from "./CommentScore";
-import { useComments } from "../context/CommentContext";
 
 import CommentEdit from "./CommentEdit";
 
-export default function Comment({ data }: { data: TComment }) {
-  const { id, content, createdAt, user, replies } = data;
+const Comment = memo(function Comment({ data }: { data: TComment }) {
+  const { id, content, createdAt, user, replies, replyingTo } = data;
 
   const [replyIsOpen, setReplyIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const { currentUser } = useUser();
-  const { handleScore } = useComments();
 
   return (
     <div className="space-y-5">
       <Card className="grid gap-6 md:grid-cols-[auto_1fr]">
         <div className="hidden md:block">
-          <CommentScore
-            data={data}
-            onClickMinus={() => handleScore(id, -1)}
-            onClickPlus={() => handleScore(id, 1)}
-          />
+          <CommentScore data={data} />
         </div>
 
         <div className="space-y-4">
@@ -57,7 +51,16 @@ export default function Comment({ data }: { data: TComment }) {
               />
             </div>
           </div>
-          {!isEditing && <div>{content}</div>}
+          {!isEditing && (
+            <div>
+              {replyingTo && (
+                <>
+                  <span className="text-blue font-medium">@{replyingTo}</span>{" "}
+                </>
+              )}
+              <span>{content}</span>
+            </div>
+          )}
           {isEditing && (
             <CommentEdit
               comment={content}
@@ -67,11 +70,7 @@ export default function Comment({ data }: { data: TComment }) {
           )}
 
           <div className="flex justify-between md:hidden">
-            <CommentScore
-              data={data}
-              onClickMinus={() => handleScore(id, -1)}
-              onClickPlus={() => handleScore(id, 1)}
-            />
+            <CommentScore data={data} />
             <CommentActions
               data={data}
               onClickReply={() => setReplyIsOpen((prev) => !prev)}
@@ -84,6 +83,7 @@ export default function Comment({ data }: { data: TComment }) {
       {replyIsOpen && (
         <CommentReply
           replyId={id}
+          replyTo={user.username}
           onReplySuccess={() => setReplyIsOpen(false)}
         />
       )}
@@ -93,4 +93,6 @@ export default function Comment({ data }: { data: TComment }) {
       )}
     </div>
   );
-}
+});
+
+export default Comment;

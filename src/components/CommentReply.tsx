@@ -8,9 +8,11 @@ import { useComments } from "../context/CommentContext";
 
 export default function CommentReply({
   replyId,
+  replyTo,
   onReplySuccess,
 }: {
   replyId?: string;
+  replyTo?: string;
   onReplySuccess?: () => void;
 }) {
   const { currentUser } = useUser();
@@ -19,14 +21,23 @@ export default function CommentReply({
 
   const [commentText, setCommentText] = useState("");
 
+  const combinedText = `${replyTo ? `@${replyTo} ` : ""}${commentText}`;
+
   return (
     <Card>
       <div className="grid grid-cols-[1fr_min-content] gap-4 md:grid-cols-[min-content_1fr_min-content]">
         <div className="col-span-2 md:col-span-1 md:col-start-2">
           <Textarea
             placeholder="Add a comment..."
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
+            spellCheck={false}
+            value={combinedText}
+            onChange={(e) => {
+              const value = e.target.value;
+              const newInput = replyTo
+                ? value.replace(`@${replyTo} `, "")
+                : value;
+              setCommentText(newInput);
+            }}
           />
         </div>
         <div className="md:col-start-1 md:row-start-1">

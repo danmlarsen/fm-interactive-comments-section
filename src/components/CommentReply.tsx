@@ -33,6 +33,9 @@ export default function CommentReply({
             value={combinedText}
             onChange={(e) => {
               const value = e.target.value;
+
+              if (!value.startsWith(`@${replyTo} `)) return;
+
               const newInput = replyTo
                 ? value.replace(`@${replyTo} `, "")
                 : value;

@@ -1,5 +1,4 @@
 import { memo, useState } from "react";
-import { formatDistanceToNowStrict } from "date-fns";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import Avatar from "../ui/Avatar";
@@ -11,6 +10,7 @@ import CommentReply from "./CommentReply";
 import CommentScore from "./CommentScore";
 
 import CommentEdit from "./CommentEdit";
+import CommentDate from "./CommentDate";
 
 const Comment = memo(function Comment({ data }: { data: TComment }) {
   const { id, content, createdAt, user, replies, replyingTo } = data;
@@ -39,9 +39,7 @@ const Comment = memo(function Comment({ data }: { data: TComment }) {
                   </span>
                 )}
               </div>
-              <div>
-                {formatDistanceToNowStrict(createdAt, { addSuffix: true })}
-              </div>
+              <CommentDate createdAt={createdAt} />
             </div>
             <div className="hidden md:block">
               <CommentActions

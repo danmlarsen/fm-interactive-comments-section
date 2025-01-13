@@ -1,12 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 import { currentUser } from "../assets/data.json";
 
 type UserContextValue = {
   currentUser: typeof currentUser;
-  votes: string[];
-  addVote: (id: string) => void;
 };
 
 const UserContext = createContext<UserContextValue>({} as UserContextValue);
@@ -16,16 +14,10 @@ export function UserContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [votes, setVotes] = useState<string[]>([]);
-
   return (
     <UserContext.Provider
       value={{
         currentUser,
-        votes,
-        addVote(id) {
-          setVotes((prev) => (prev.includes(id) ? prev : [...prev, id]));
-        },
       }}
     >
       {children}

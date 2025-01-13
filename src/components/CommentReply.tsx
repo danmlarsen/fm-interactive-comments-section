@@ -34,7 +34,7 @@ export default function CommentReply({
             onChange={(e) => {
               const value = e.target.value;
 
-              if (!value.startsWith(`@${replyTo} `)) return;
+              if (replyTo && !value.startsWith(`@${replyTo} `)) return;
 
               const newInput = replyTo
                 ? value.replace(`@${replyTo} `, "")
@@ -58,6 +58,8 @@ export default function CommentReply({
                 handleNewReply(commentText, replyId);
                 onReplySuccess?.();
               } else handleNewComment(commentText);
+
+              setCommentText("");
             }}
           >
             Reply

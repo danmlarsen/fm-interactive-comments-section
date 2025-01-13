@@ -9,6 +9,7 @@ import { TComment } from "../types/Comment";
 
 type CommentsContextValue = {
   comments: TComment[];
+  scoreVotes: string[];
   handleNewComment: (comment: string, replyId?: string) => void;
   handleNewReply: (replyText: string, replyId: string) => void;
   handleEditComment: (id: string, newContent: string) => void;
@@ -50,17 +51,23 @@ export default function CommentsContextProvider({
     };
   });
 
-  const { currentUser, votes, addVote } = useUser();
+  const { currentUser } = useUser();
 
   // const [comments, setComments] = useState(commentsData);
   const [comments, setComments] = useLocalStorageState("comments", {
     defaultValue: commentsData,
   });
 
+  const [scoreVotes, setScoreVotes] = useLocalStorageState<string[]>(
+    "scoreVotes",
+    { defaultValue: [] },
+  );
+
   return (
     <CommentsContext.Provider
       value={{
         comments,
+        scoreVotes,
         handleNewComment(commentText) {
           setComments((prevComments) => [
             ...prevComments,
@@ -137,7 +144,7 @@ export default function CommentsContextProvider({
           });
         },
         handleScore(id, value) {
-          if (votes.includes(id)) return;
+          if (scoreVotes.includes(id)) return;
 
           setComments((prevComments) =>
             prevComments.map((comment) => ({
@@ -150,7 +157,8 @@ export default function CommentsContextProvider({
               ),
             })),
           );
-          addVote(id);
+
+          setScoreVotes((prevVotes) => [...prevVotes, id]);
         },
       }}
     >

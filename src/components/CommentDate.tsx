@@ -11,7 +11,7 @@ const CommentDate: React.FC<{ createdAt: string }> = ({ createdAt }) => {
       setFormattedDate(
         formatDistanceToNowStrict(createdAt, { addSuffix: true }),
       );
-    }, 1000);
+    }, 1000 * 60);
 
     return () => clearInterval(interval);
   }, [createdAt]);

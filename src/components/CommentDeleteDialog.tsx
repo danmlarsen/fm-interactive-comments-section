@@ -9,7 +9,7 @@ export default function CommentDeleteDialog({
   onCancel: () => void;
 }) {
   return (
-    <Dialog className="space-y-5">
+    <Dialog className="space-y-5" onClickOutside={onCancel}>
       <h2 className="text-xl font-medium md:text-2xl">Delete comment</h2>
       <p className="text-gray-800">
         Are you sure you want to delete this comment? This will remove the

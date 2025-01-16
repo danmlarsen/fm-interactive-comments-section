@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import { motion } from "motion/react";
 
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
@@ -18,13 +19,21 @@ export default function Dialog({
 
   return createPortal(
     <>
-      <div
+      <motion.div
+        key="backdrop"
         className="fixed inset-0 z-10 bg-black/50"
         onClick={onClickOutside}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       />
-      <dialog
+      <motion.dialog
+        key="dialog"
         open
         className="fixed inset-0 z-50 grid place-items-center bg-transparent p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
         <div
           className={twMerge(
@@ -34,8 +43,8 @@ export default function Dialog({
         >
           {children}
         </div>
-      </dialog>
+      </motion.dialog>
     </>,
-    document.querySelector("#root")!,
+    document.body,
   );
 }

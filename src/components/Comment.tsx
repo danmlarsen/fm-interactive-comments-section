@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useUser } from "../context/UserContext";
 import { TComment } from "../types/Comment";
 import Avatar from "../ui/Avatar";
@@ -25,14 +26,25 @@ const Comment = memo(function Comment({ data }: { data: TComment }) {
   const { handleDeleteComment } = useComments();
 
   return (
-    <>
-      {deleteDialogOpen && (
-        <CommentDeleteDialog
-          onConfirm={() => handleDeleteComment(id)}
-          onCancel={() => setDeleteDialogOpen(false)}
-        />
-      )}
-      <div className="space-y-5">
+    <motion.li layout>
+      <AnimatePresence>
+        {deleteDialogOpen && (
+          <CommentDeleteDialog
+            onConfirm={() => {
+              handleDeleteComment(id);
+              setDeleteDialogOpen(false);
+            }}
+            onCancel={() => setDeleteDialogOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        layout
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <Card className="grid gap-6 md:grid-cols-[auto_1fr]">
           <div className="hidden md:block">
             <CommentScore data={data} />
@@ -90,20 +102,29 @@ const Comment = memo(function Comment({ data }: { data: TComment }) {
             </div>
           </div>
         </Card>
+      </motion.div>
 
+      <AnimatePresence>
         {replyIsOpen && (
-          <CommentReply
-            replyId={id}
-            replyTo={user.username}
-            onReplySuccess={() => setReplyIsOpen(false)}
-          />
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <CommentReply
+              replyId={id}
+              replyTo={user.username}
+              onReplySuccess={() => setReplyIsOpen(false)}
+            />
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        {replies && replies.length > 0 && (
-          <CommentRepliesList replies={replies} />
-        )}
-      </div>
-    </>
+      {replies && replies.length > 0 && (
+        <CommentRepliesList replies={replies} />
+      )}
+    </motion.li>
   );
 });
 

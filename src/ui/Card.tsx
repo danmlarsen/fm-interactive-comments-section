@@ -1,17 +1,17 @@
-import { ComponentProps } from "react";
+import { motion, HTMLMotionProps } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
 export default function Card({
   className,
   children,
   ...props
-}: ComponentProps<"div">) {
+}: HTMLMotionProps<"div"> & { children: React.ReactNode }) {
   return (
-    <div
+    <motion.div
       className={twMerge("rounded-lg bg-white p-4 md:p-6", className)}
       {...props}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

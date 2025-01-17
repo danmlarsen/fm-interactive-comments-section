@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { useComments } from "../context/CommentContext";
 import { TComment } from "../types/Comment";
 import IconMinus from "../ui/icons/IconMinus";
@@ -9,7 +10,10 @@ export default function CommentScore({ data }: { data: TComment }) {
   const { handleScore, scoreVotes } = useComments();
 
   return (
-    <div className="text-blue font flex min-w-[100px] items-center justify-between gap-4 rounded-[10px] bg-gray-100 text-center font-medium md:min-w-10 md:flex-col">
+    <motion.div
+      className="text-blue font flex min-w-[100px] items-center justify-between gap-4 rounded-[10px] bg-gray-100 text-center font-medium md:min-w-10 md:flex-col"
+      layout
+    >
       <CommentScoreButton
         onClick={() => handleScore(id, 1)}
         disabled={scoreVotes.includes(id)}
@@ -23,7 +27,7 @@ export default function CommentScore({ data }: { data: TComment }) {
       >
         <IconMinus />
       </CommentScoreButton>
-    </div>
+    </motion.div>
   );
 }
 

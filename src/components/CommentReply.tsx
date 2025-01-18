@@ -35,6 +35,7 @@ export default function CommentReply({
       <div className="col-span-2 md:col-span-1 md:col-start-2">
         <Textarea
           placeholder="Add a comment..."
+          aria-label="Post content"
           spellCheck={false}
           value={combinedText}
           onChange={(e) => {
@@ -51,6 +52,7 @@ export default function CommentReply({
       </div>
       <div className="md:col-start-1 md:row-start-1">
         <Avatar
+          className={`${!replyId ? "md:size-10" : ""}`}
           username={currentUser.username}
           image={currentUser.image.webp}
         />

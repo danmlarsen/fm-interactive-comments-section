@@ -28,6 +28,7 @@ export default function CommentScore({ data }: { data: TComment }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           key={score}
+          aria-label="Comment Score"
         >
           {score}
         </motion.span>

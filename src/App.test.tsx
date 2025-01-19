@@ -2,13 +2,13 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
-describe("App", () => {
-  const user = userEvent.setup();
+const user = userEvent.setup();
 
-  beforeEach(() => {
-    render(<App />);
-  });
+beforeEach(() => {
+  render(<App />);
+});
 
+describe("Comment CRUD", () => {
   it("renders", async () => {
     const foundUsername = await screen.findByText(/juliusomo/i);
     expect(foundUsername).toBeVisible();
@@ -42,7 +42,7 @@ describe("App", () => {
 
     await user.click(confirmDeleteButton);
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(
         screen.queryByText(
           "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
@@ -64,5 +64,46 @@ describe("App", () => {
     const foundComment = await screen.findByText("test");
 
     expect(foundComment).toBeVisible();
+  });
+});
+
+describe("Comment score", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it("should increase score when clicking plus", async () => {
+    const selectedCommentChild = await screen.findByText(/amyrobson/i);
+    const selectedComment = selectedCommentChild.closest("li")!;
+    const plusButton = within(selectedComment).getAllByLabelText("Upvote")[0];
+    const previousScoreElement =
+      within(selectedComment).getAllByLabelText("Comment Score")[0];
+    const previousScoreValue = Number(previousScoreElement.textContent);
+
+    await user.click(plusButton);
+
+    await waitFor(() => {
+      const nextScoreElement =
+        within(selectedComment).getAllByLabelText("Comment Score")[0];
+      expect(Number(nextScoreElement.textContent)).toBe(previousScoreValue + 1);
+    });
+  });
+
+  it("should decrease score when clicking minus", async () => {
+    const selectedCommentChild = await screen.findByText(/amyrobson/i);
+    const selectedComment = selectedCommentChild.closest("li")!;
+    const minusButton =
+      within(selectedComment).getAllByLabelText("Downvote")[0];
+    const previousScoreElement =
+      within(selectedComment).getAllByLabelText("Comment Score")[0];
+    const previousScoreValue = Number(previousScoreElement.textContent);
+
+    await user.click(minusButton);
+
+    await waitFor(() => {
+      const nextScoreElement =
+        within(selectedComment).getAllByLabelText("Comment Score")[0];
+      expect(Number(nextScoreElement.textContent)).toBe(previousScoreValue - 1);
+    });
   });
 });

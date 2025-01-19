@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { motion } from "motion/react";
 import { useUser } from "../context/UserContext";
 import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
-import Textarea from "../ui/Textarea";
 import { useComments } from "../context/CommentContext";
 import { trimReplyTo } from "../utils/utils";
 import CommentTextInput from "./CommentTextInput";

@@ -6,6 +6,8 @@ import Button from "../ui/Button";
 import Card from "../ui/Card";
 import Textarea from "../ui/Textarea";
 import { useComments } from "../context/CommentContext";
+import { trimReplyTo } from "../utils/utils";
+import CommentTextInput from "./CommentTextInput";
 
 export default function CommentReply({
   replyId,
@@ -20,60 +22,56 @@ export default function CommentReply({
 
   const { handleNewComment, handleNewReply } = useComments();
 
-  const [commentText, setCommentText] = useState("");
-
-  const combinedText = `${replyTo ? `@${replyTo} ` : ""}${commentText}`;
+  const [content, setContent] = useState("");
 
   return (
     <Card
-      className="grid grid-cols-[1fr_min-content] gap-4 md:grid-cols-[min-content_1fr_min-content]"
       layout
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="col-span-2 md:col-span-1 md:col-start-2">
-        <Textarea
-          placeholder="Add a comment..."
-          aria-label="Post content"
-          spellCheck={false}
-          value={combinedText}
-          onChange={(e) => {
-            const value = e.target.value;
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
 
-            if (replyTo && !value.startsWith(`@${replyTo} `)) return;
+          const contentReplyTrimmed = replyTo
+            ? trimReplyTo(content, replyTo)
+            : content;
 
-            const newInput = replyTo
-              ? value.replace(`@${replyTo} `, "")
-              : value;
-            setCommentText(newInput);
-          }}
-        />
-      </div>
-      <div className="md:col-start-1 md:row-start-1">
-        <Avatar
-          className={`${!replyId ? "md:size-10" : ""}`}
-          username={currentUser.username}
-          image={currentUser.image.webp}
-        />
-      </div>
-      <div>
-        <Button
-          onClick={() => {
-            if (commentText.trim().length === 0) return;
+          if (!contentReplyTrimmed.trim()) return;
 
-            if (replyId) {
-              handleNewReply(commentText, replyId);
-              onReplySuccess?.();
-            } else handleNewComment(commentText);
+          if (replyId) {
+            handleNewReply(contentReplyTrimmed, replyId);
+            onReplySuccess?.();
+          } else handleNewComment(contentReplyTrimmed);
 
-            setCommentText("");
-          }}
-        >
-          {replyId && "Reply"}
-          {!replyId && "Send"}
-        </Button>
-      </div>
+          setContent("");
+        }}
+      >
+        <div className="grid grid-cols-[1fr_min-content] gap-4 md:grid-cols-[min-content_1fr_min-content]">
+          <div className="col-span-2 md:col-span-1 md:col-start-2">
+            <CommentTextInput
+              value={content}
+              setValue={setContent}
+              replyTo={replyTo}
+            />
+          </div>
+          <div className="md:col-start-1 md:row-start-1">
+            <Avatar
+              className={`${!replyId ? "md:size-10" : ""}`}
+              username={currentUser.username}
+              image={currentUser.image.webp}
+            />
+          </div>
+          <div>
+            <Button type="submit">
+              {replyId && "Reply"}
+              {!replyId && "Send"}
+            </Button>
+          </div>
+        </div>
+      </form>
     </Card>
   );
 }

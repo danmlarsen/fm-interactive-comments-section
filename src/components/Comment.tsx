@@ -59,7 +59,7 @@ const Comment = memo(function Comment({ data }: { data: TComment }) {
                   <div className="flex items-center gap-2 font-medium text-gray-800">
                     <span>{user.username}</span>
                     {user.username === currentUser.username && (
-                      <span className="bg-blue rounded-sm p-1 px-2 text-xs text-white">
+                      <span className="bg-blue rounded-sm px-2 py-1 text-xs text-white">
                         you
                       </span>
                     )}
@@ -76,34 +76,32 @@ const Comment = memo(function Comment({ data }: { data: TComment }) {
                 </div>
               </motion.div>
               <motion.div layout>
-                <AnimatePresence mode="wait">
-                  {!isEditing && (
-                    <motion.div
-                      layout
-                      key="content"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      {replyingTo ? (
-                        <span className="text-blue font-medium">
-                          @{replyingTo}{" "}
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                      <span>{content}</span>
-                    </motion.div>
-                  )}
-                  {isEditing && (
-                    <CommentEdit
-                      key="content-edit"
-                      comment={content}
-                      commentId={id}
-                      onEdit={() => setIsEditing(false)}
-                    />
-                  )}
-                </AnimatePresence>
+                {!isEditing && (
+                  <motion.div
+                    layout
+                    key="content"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    {replyingTo ? (
+                      <span className="text-blue font-medium">
+                        @{replyingTo}{" "}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                    <span>{content}</span>
+                  </motion.div>
+                )}
+                {isEditing && (
+                  <CommentEdit
+                    key="content-edit"
+                    comment={content}
+                    commentId={id}
+                    onEdit={() => setIsEditing(false)}
+                    replyTo={replyingTo}
+                  />
+                )}
               </motion.div>
 
               <div className="flex justify-between md:hidden">

@@ -53,7 +53,6 @@ export default function CommentsContextProvider({
 
   const { currentUser } = useUser();
 
-  // const [comments, setComments] = useState(commentsData);
   const [comments, setComments] = useLocalStorageState("comments", {
     defaultValue: commentsData,
   });

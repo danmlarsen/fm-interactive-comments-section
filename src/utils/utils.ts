@@ -31,3 +31,7 @@ export function convertToTimestamp(relativeTime: string) {
 
   return now.toISOString();
 }
+
+export function trimReplyTo(text: string, replyTo: string) {
+  return text.replace(`@${replyTo} `, "");
+}

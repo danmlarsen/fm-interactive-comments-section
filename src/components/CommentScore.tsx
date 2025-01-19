@@ -11,7 +11,7 @@ export default function CommentScore({ data }: { data: TComment }) {
 
   return (
     <motion.div
-      className="text-blue flex min-w-[100px] items-center justify-between rounded-[10px] bg-gray-100 text-center font-medium md:min-h-[100px] md:min-w-10 md:flex-col"
+      className="text-blue flex min-w-[6.26rem] items-center justify-between rounded-[0.625rem] bg-gray-100 text-center font-medium md:min-h-[6.25rem] md:min-w-10 md:flex-col"
       layout
     >
       <CommentScoreButton

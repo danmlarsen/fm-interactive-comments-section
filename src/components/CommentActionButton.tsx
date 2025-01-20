@@ -19,6 +19,7 @@ export default function CommentActionButton({
           (variant === "Delete" && IconDelete) ||
           IconReply
         }
+        alt={`${variant} icon`}
         aria-hidden={true}
       />
       <span>{variant}</span>

@@ -31,9 +31,9 @@ export default function Dialog({
         key="dialog"
         open
         className="fixed inset-0 z-50 grid place-items-center bg-transparent p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
       >
         <div
           className={twMerge(
